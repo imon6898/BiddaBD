@@ -1,0 +1,98 @@
+
+import 'package:biddabd/login/text_styles.dart';
+import 'package:flutter/material.dart';
+
+
+class CommonTextFieldViewTwo extends StatelessWidget {
+  final String? titleText;
+  final String hintText;
+  final String? errorText;
+  final bool isObscureText, isAllowTopTitleView;
+  final EdgeInsetsGeometry padding;
+  final Function(String)? onChanged;
+  final TextInputType keyboardType;
+  final TextEditingController? controller;
+
+  const CommonTextFieldViewTwo({
+    Key? key,
+    this.hintText = '',
+    this.isObscureText = false,
+    this.padding = const EdgeInsets.only(),
+    this.onChanged,
+    this.keyboardType = TextInputType.text,
+    this.isAllowTopTitleView = true,
+    this.errorText,
+    this.titleText = '',
+    this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (isAllowTopTitleView && titleText != '')
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+              child: Text(
+                titleText ?? "",
+                style: TextStyles(context).getDescriptionStyle(),
+              ),
+            ),
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+              side:  BorderSide(color: Color(0xff2d368e)),
+            ),
+            shadowColor: Colors.black12.withOpacity(
+              Theme.of(context).brightness == Brightness.dark ? 2 : 1,
+            ),
+
+            child: Padding(
+              padding: const EdgeInsets.only(left: 0, right: 16),
+              child: SizedBox(
+                height: 48,
+                child: Center(
+                  child: TextField(
+                    controller: controller,
+                    maxLines: 1,
+                    onChanged: onChanged,
+                    style: TextStyles(context).getRegularStyle(),
+                    obscureText: isObscureText,
+                    cursorColor: Theme.of(context).primaryColor,
+                    onEditingComplete: () {
+                      FocusScope.of(context).nextFocus();
+                    },
+                    decoration: new InputDecoration(
+                      icon: Image.asset("Images/images/signin5.png"),
+                      errorText: null,
+                      border: InputBorder.none,
+                      hintText: hintText,
+                      hintStyle:
+                          TextStyle(color: Color(0xfd9a8383)),
+                    ),
+                    keyboardType: keyboardType,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (errorText != null && errorText != '')
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 16, right: 16, top: 4, bottom: 4),
+              child: Text(
+                errorText ?? "",
+                style: TextStyles(context).getDescriptionStyle().copyWith(
+                      color: Color(0xffEF4545),
+                    ),
+              ),
+            )
+        ],
+      ),
+    );
+  }
+}
